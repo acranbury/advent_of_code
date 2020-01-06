@@ -35,8 +35,18 @@ fn day1(contents: &str)
 
 	for line in contents.lines() {
 		let mass: i32 = line.parse().unwrap();
-		fuel += (mass / 3) - 2;
+		fuel += get_fuel_cost(mass);
 	}
 
 	println!("Total fuel: {}", fuel);
+}
+
+fn get_fuel_cost(mass: i32) -> i32
+{
+	let fuel =(mass / 3) - 2;
+	if fuel <= 0 {
+		0
+	} else {
+		fuel + get_fuel_cost(fuel)
+	}
 }
