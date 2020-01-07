@@ -1,4 +1,11 @@
 pub fn run(contents: &str){
+	let mut intcode: Vec<i32> = contents.split(',').map(|x| x.parse().unwrap()).collect();
+
+	intcode_computer(&mut intcode);
+
+	for code in intcode {
+		println!("{},", code);
+	}
 }
 
 fn computer(program: &Vec<i32>) {
