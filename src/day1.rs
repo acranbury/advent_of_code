@@ -23,7 +23,7 @@ fn fuel_calc(mass: i32) -> i32 {
 }
 
 #[cfg(test)]
-mod tests {
+mod day1_tests {
 	use super::*;
 
 	#[test]

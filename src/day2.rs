@@ -5,29 +5,35 @@ pub fn run(contents: &str){
 										.map(|x| x.parse().unwrap())
 										.collect();
 
+	// Restore to "1202 program alarm" state
+	intcode[1] = 12;
+	intcode[2] = 2;
+
 	intcode_computer(&mut intcode);
 
-	for code in intcode {
-		println!("{},", code);
-	}
+	println!("{:?},", intcode);
 }
 
 const OPCODE_ADD: i32 = 1;
 const OPCODE_MUL: i32 = 2;
 
-fn intcode_computer(program: &mut Vec<i32>) {
+pub fn intcode_computer(program: &mut Vec<i32>) {
 	let mut pc: usize = 0;
 	let mut opcode = program[pc];
 
 	while opcode != 99 {
 		match opcode {
 			OPCODE_ADD => {
-				let index: usize = program[pc + 3] as usize;
-				program[index] = program[index + 1] + program[index + 2]
+				let param1: usize = program[pc + 1] as usize;
+				let param2: usize = program[pc + 2] as usize;
+				let result: usize = program[pc + 3] as usize;
+				program[result] = program[param1] + program[param2];
 			},
 			OPCODE_MUL => {
-				let index: usize = program[pc + 3] as usize;
-				program[index] = program[index + 1] * program[index + 2]
+				let param1: usize = program[pc + 1] as usize;
+				let param2: usize = program[pc + 2] as usize;
+				let result: usize = program[pc + 3] as usize;
+				program[result] = program[param1] * program[param2];
 			},
 			_ => {
 				println!("Unknown Opcode! {}", opcode);
@@ -47,7 +53,7 @@ fn intcode_computer(program: &mut Vec<i32>) {
 }
 
 #[cfg(test)]
-mod tests {
+mod day2_tests {
 	use super::*;
 
 	#[test]
