@@ -1,17 +1,36 @@
 use std::process;
 
 pub fn run(contents: &str){
-	let mut intcode: Vec<i32> = contents.split(',')
+	let intcode: Vec<i32> = contents.split(',')
 										.map(|x| x.parse().unwrap())
 										.collect();
+	let mut program: Vec<i32>;
+	
+	'outer: for noun in 0..100
+	{
+		for verb in 0..100 {
+			program = intcode.clone();
 
-	// Restore to "1202 program alarm" state
-	intcode[1] = 12;
-	intcode[2] = 2;
+			program[1] = noun;
+			program[2] = verb;
 
-	intcode_computer(&mut intcode);
+			intcode_computer(&mut program);
 
-	println!("{:?},", intcode);
+			// println!("Noun: {}, Verb: {}, Output: {}", noun, verb, program[0]);
+
+			if program[0] == 19690720 {
+				println!("Found it! Noun: {}, Verb: {}", noun, verb);
+				println!("{:?}", program);
+				break 'outer;
+			}
+		}
+	}
+	// program[1] = 12;
+	// program[2] = 50;
+
+	// intcode_computer(&mut program);
+
+	// println!("{:?},", program);
 }
 
 const OPCODE_ADD: i32 = 1;
